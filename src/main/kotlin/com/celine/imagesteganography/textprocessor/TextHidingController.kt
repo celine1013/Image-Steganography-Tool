@@ -20,7 +20,7 @@ class TextHidingController {
         val fileBos = textHidingTool.hideMessageInImage(msg)
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.IMAGE_PNG)
+                .contentType(MediaType.IMAGE_JPEG)
                 .body(fileBos.toByteArray())
     }
 }
