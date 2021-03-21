@@ -1,5 +1,5 @@
 # Image-Steganography-Tool
-APIs allows user to hide message inside image
+APIs allowing user to hide message inside image
 
 # Description
 This self-learning project aims to hide messages in different formats such as text, image in another image, and demonstrate how it works with infographics, and example image processor program.
