@@ -16,9 +16,9 @@ class TextHidingController {
     lateinit var textHidingTool: TextHidingTool
 
 
-    @GetMapping(value = ["/api/hideText/{msg}"])
+    @GetMapping(value = ["/api/hideText/"])
     @ResponseBody
-    fun hideMessageInImage(@PathVariable msg: String?): ResponseEntity<Any> {
+    fun hideMessageInImage(@RequestHeader msg: String?): ResponseEntity<Any> {
         if (msg.isNullOrBlank()) throw FieldMissingException("message to be hidden")
         val fileBos = textHidingTool.hideMessageInImage(msg)
         return ResponseEntity
