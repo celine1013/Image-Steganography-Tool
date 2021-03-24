@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
 
@@ -27,13 +29,13 @@ class TextHidingController {
                 .body(fileBos.toByteArray())
     }
 
-    @GetMapping(value = ["/api/extractText"])
+    @PostMapping(value = ["/api/extractText"])
     @ResponseBody
-    fun extractMessageFromImage(): ResponseEntity<Any> {
-        val message = ""
+    fun extractMessageFromImage(@RequestBody image: MultipartFile?): ResponseEntity<Any> {
+        val message = "ok"
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.IMAGE_JPEG)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(mapOf("hiddenMessage" to message))
     }
 }

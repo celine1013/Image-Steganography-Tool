@@ -3,6 +3,7 @@ package com.celine.imagesteganography.textprocessor
 import com.celine.imagesteganography.util.FileUtil
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
@@ -17,12 +18,13 @@ class TextHidingTool {
     fun hideMessageInImage(msg: String): ByteArrayOutputStream{
         val fileBos = ByteArrayOutputStream()
         val coverImage = FileUtil.openImage(srcPath, "batman2.jpg") //todo: allow user to pick image from a range
-        val encodedData = FileUtil.toBinary(msg)
+        val encodedData = FileUtil.toBinary("$DATA_FLAG{$msg}")
         insertData(coverImage, encodedData)
         ImageIO.write(coverImage, "jpg", fileBos)
         return fileBos
     }
 
+    //data: Binary values as list of char('0' or '1')
     private fun insertData(image: BufferedImage, data: MutableList<Char>) {
         var dataIndex = 0
         loop@for (y in 0 until image.height) {
@@ -46,8 +48,11 @@ class TextHidingTool {
         }
     }
 
-    fun extractMessageFromImage(image: BufferedImage):String{
+    fun extractMessageFromImage(file: MultipartFile):String{
 
         return ""
+    }
+    companion object{
+        const val DATA_FLAG = "ZZEN9203"
     }
 }
