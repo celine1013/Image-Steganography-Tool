@@ -34,6 +34,6 @@ class TextHidingController {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(mapOf("hiddenMessage", message))
+                .body(mapOf("hiddenMessage" to message))
     }
 }
