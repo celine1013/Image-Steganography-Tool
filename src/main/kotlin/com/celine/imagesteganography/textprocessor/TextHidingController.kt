@@ -13,6 +13,7 @@ class TextHidingController {
     @Autowired
     lateinit var textHidingTool: TextHidingTool
 
+
     @GetMapping(value = ["/api/hideText/{msg}"])
     @ResponseBody
     fun refreshSpotTradeHistory(@PathVariable msg: String?): ResponseEntity<Any> {

@@ -3,6 +3,8 @@ package com.celine.imagesteganography.util
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
+import java.lang.StringBuilder
+import java.util.*
 import javax.imageio.ImageIO
 
 object FileUtil {
@@ -11,33 +13,21 @@ object FileUtil {
         return ImageIO.read(File(srcPath + File.separator + imageName))
     }
 
-    fun toBinary() {
-
-    }
-
-    fun insertData(image: BufferedImage, data: Any) {
-        for (y in 0 until image.height) {
-            for (x in 0 until image.width) {
-                //retrieving rgb colors of each pixel
-                val color = Color(image.getRGB(x, y), true)
-
-                //todo: extrat variant from data
-                val red = modifyColor(color.red, 0)
-                val green = modifyColor(color.green, 0)
-                val blue = modifyColor(color.blue, 0)
-                val alpha = modifyColor(color.alpha, 0)
-
-                //modify the color of the pixel
-                image.setRGB(x, y, Color(red, green, blue, alpha).rgb)
-            }
+    fun toBinary(textMessage:String): MutableList<Char> {
+        val result = mutableListOf<Char>()
+        for(char in textMessage.toCharArray()){
+            val binaryString = Integer.toBinaryString(char.toInt())
+            binaryString.forEach { result.add(it) }
         }
+        return result
     }
 
-    private fun modifyColor(orig: Int, variant: Int): Int {
-        val result = orig + variant
-        if (result > MAX_RGB_VALUE) return MAX_RGB_VALUE
-        if (result < 0) return 0
-        return result
+    fun modifyColor(orig: Int, variant: Char): Int {
+        val origBit = Integer.toBinaryString(orig).toMutableList()
+        origBit[origBit.lastIndex] = variant
+        val sb = StringBuilder()
+        origBit.forEach { sb.append(it) }
+        return Integer.parseInt(sb.toString(), 2)
     }
 
     const val MAX_RGB_VALUE = 255

@@ -3,6 +3,8 @@ package com.celine.imagesteganography.textprocessor
 import com.celine.imagesteganography.util.FileUtil
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.awt.Color
+import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
@@ -14,12 +16,38 @@ class TextHidingTool {
 
     fun hideMessageInImage(msg: String): ByteArrayOutputStream{
         val fileBos = ByteArrayOutputStream()
-        //todo: encode the msg to bit/bytes
-
         val coverImage = FileUtil.openImage(srcPath, "batman2.jpg") //todo: allow user to pick image from a range
-        FileUtil.insertData(coverImage, msg)
-
+        val encodedData = FileUtil.toBinary(msg)
+        insertData(coverImage, encodedData)
         ImageIO.write(coverImage, "jpg", fileBos)
         return fileBos
+    }
+
+    private fun insertData(image: BufferedImage, data: MutableList<Char>) {
+        var dataIndex = 0
+        loop@for (y in 0 until image.height) {
+            for (x in 0 until image.width) {
+                //retrieving rgb colors of each pixel
+                val color = Color(image.getRGB(x, y), true)
+
+                val red = FileUtil.modifyColor(color.red, data[dataIndex])
+                if(dataIndex == data.lastIndex)break@loop
+                dataIndex++
+                val green = FileUtil.modifyColor(color.green, data[dataIndex])
+                if(dataIndex == data.lastIndex)break@loop
+                dataIndex++
+                val blue = FileUtil.modifyColor(color.blue, data[dataIndex])
+                if(dataIndex == data.lastIndex)break@loop
+                dataIndex++
+
+                //modify the color of the pixel
+                image.setRGB(x, y, Color(red, green, blue, color.alpha).rgb)
+            }
+        }
+    }
+
+    fun extractMessageFromImage(image: BufferedImage):String{
+
+        return ""
     }
 }
