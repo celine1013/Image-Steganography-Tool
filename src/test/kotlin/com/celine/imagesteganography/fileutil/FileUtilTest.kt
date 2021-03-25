@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class FileUtilTest {
 
-    private val messageBinary = listOf<Char>('1', '1', '0', '0', '0', '0', '1')
+    private val messageBinary = listOf<Char>('0','1', '1', '0', '0', '0', '0', '1')
 
     @ExperimentalStdlibApi
     @Test
@@ -17,7 +17,7 @@ class FileUtilTest {
 
     @ExperimentalStdlibApi
     @Test
-    fun modifyColor(){
+    fun testModifyColor(){
         var result = FileUtil.modifyColor(255, '1')
         assertEquals(255, result)
         result = FileUtil.modifyColor(254, '1')
@@ -26,5 +26,15 @@ class FileUtilTest {
         assertEquals(254, result)
         result = FileUtil.modifyColor(254, '0')
         assertEquals(254, result)
+    }
+
+    @Test
+    fun testGetColorBits(){
+        var result = FileUtil.getColorBit(255, 2)
+        assertEquals("11", result)
+        result = FileUtil.getColorBit(254, 1)
+        assertEquals("0", result)
+        result = FileUtil.getColorBit(254, 3)
+        assertEquals("110", result)
     }
 }

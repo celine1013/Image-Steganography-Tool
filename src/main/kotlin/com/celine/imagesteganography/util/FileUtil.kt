@@ -1,10 +1,8 @@
 package com.celine.imagesteganography.util
 
-import java.awt.Color
+import org.springframework.web.multipart.MultipartFile
 import java.awt.image.BufferedImage
 import java.io.File
-import java.lang.StringBuilder
-import java.util.*
 import javax.imageio.ImageIO
 
 object FileUtil {
@@ -13,10 +11,14 @@ object FileUtil {
         return ImageIO.read(File(srcPath + File.separator + imageName))
     }
 
-    fun toBinary(textMessage:String): MutableList<Char> {
+    fun openImage(file: MultipartFile): BufferedImage {
+        return ImageIO.read(file.inputStream)
+    }
+
+    fun toBinary(textMessage: String): MutableList<Char> {
         val result = mutableListOf<Char>()
-        for(char in textMessage.toCharArray()){
-            val binaryString = Integer.toBinaryString(char.toInt())
+        for (char in textMessage.toCharArray()) {
+            val binaryString = Integer.toBinaryString(char.toInt()).padStart(8, '0')
             binaryString.forEach { result.add(it) }
         }
         return result
@@ -28,6 +30,13 @@ object FileUtil {
         val sb = StringBuilder()
         origBit.forEach { sb.append(it) }
         return Integer.parseInt(sb.toString(), 2)
+    }
+
+    fun getColorBit(color: Int, bitLength: Int): String {
+        val result = Integer.toBinaryString(color)
+        val lastIndex = result.length
+        val startIndex = lastIndex - bitLength
+        return result.substring(startIndex, lastIndex)
     }
 
     const val MAX_RGB_VALUE = 255

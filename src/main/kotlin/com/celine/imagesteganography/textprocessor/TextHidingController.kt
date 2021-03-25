@@ -32,7 +32,8 @@ class TextHidingController {
     @PostMapping(value = ["/api/extractText"])
     @ResponseBody
     fun extractMessageFromImage(@RequestBody image: MultipartFile?): ResponseEntity<Any> {
-        val message = "ok"
+        if(image == null)throw FieldMissingException("image with hidden message")
+        val message = textHidingTool.extractMessageFromImage(image)
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
