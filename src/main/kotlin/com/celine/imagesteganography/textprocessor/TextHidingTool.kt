@@ -21,7 +21,6 @@ class TextHidingTool {
         val fileBos = ByteArrayOutputStream()
         val coverImage = FileUtil.openImage(srcPath, "batman2.jpg") //todo: allow user to pick image from a range
         val encodedData = FileUtil.toBinary("$DATA_FLAG{$msg}")
-        Log.d("TEXT", encodedData.toString())
         insertData(coverImage, encodedData)
         ImageIO.write(coverImage, "png", fileBos)//has to be a png to prevent auto-file-compression
         return fileBos
