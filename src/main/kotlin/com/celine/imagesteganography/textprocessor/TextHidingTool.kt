@@ -23,7 +23,7 @@ class TextHidingTool {
         val encodedData = FileUtil.toBinary("$DATA_FLAG{$msg}")
         Log.d("TEXT", encodedData.toString())
         insertData(coverImage, encodedData)
-        ImageIO.write(coverImage, "jpg", fileBos)
+        ImageIO.write(coverImage, "png", fileBos)//has to be a png to prevent auto-file-compression
         return fileBos
     }
 
@@ -58,13 +58,9 @@ class TextHidingTool {
         }
     }
 
-    //todo: allow users to decide how many bits have been changed
     fun extractMessageFromImage(file: MultipartFile):String{
         //todo:solve image compression problem
-        //val image = FileUtil.openImage(file)
-        val image = FileUtil.openImage(srcPath, "batman2.jpg")
-        val encodedData = FileUtil.toBinary("$DATA_FLAG{some secret message}")
-        insertData(image, encodedData)
+        val image = FileUtil.openImage(file)
 
         val sb = StringBuilder()
         val result = StringBuilder()
