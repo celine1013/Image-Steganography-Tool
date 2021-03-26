@@ -1,7 +1,6 @@
 package com.celine.imagesteganography.imageprocessor
 
 import com.celine.imagesteganography.errors.FieldMissingException
-import com.celine.imagesteganography.textprocessor.TextHidingTool
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -23,15 +22,15 @@ class ImageHidingController {
         val fileBos = imageHidingTool.hideMessageInImage(image)
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.IMAGE_PNG)
+                .contentType(MediaType.IMAGE_JPEG)
                 .body(fileBos.toByteArray())
     }
 
     @PostMapping(value = ["/api/extractImage"])
     @ResponseBody
     fun extractMessageFromImage(@RequestBody image: MultipartFile?): ResponseEntity<Any> {
-        if(image == null)throw FieldMissingException("image with hidden message(image)")
-        val hiddenImage = imageHidingTool.extractMessageFromImage(image)
+        if (image == null) throw FieldMissingException("image with hidden message(image)")
+        val hiddenImage = imageHidingTool.extractImageFromImage(image)
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_PNG)
