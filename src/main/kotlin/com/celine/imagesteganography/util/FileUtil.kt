@@ -79,7 +79,7 @@ object FileUtil {
     }
 
     fun readColorValue(color: Int): Int {
-        val colorBits = Integer.toBinaryString(color)
+        val colorBits = Integer.toBinaryString(color).padStart(8, '0')
         val stegColor = colorBits.substring(4..7).padEnd(8, '0')
         return Integer.parseInt(stegColor, 2)
     }
@@ -91,6 +91,4 @@ object FileUtil {
         val mixedBitString = firstBitString.substring(0..3) + secondBitString.substring(0..3)
         return Integer.parseInt(mixedBitString, 2)
     }
-
-    const val MAX_RGB_VALUE = 255
 }
