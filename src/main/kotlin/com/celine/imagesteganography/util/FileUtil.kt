@@ -3,7 +3,10 @@ package com.celine.imagesteganography.util
 import org.springframework.web.multipart.MultipartFile
 import java.awt.image.BufferedImage
 import java.io.File
+import java.io.FileOutputStream
+import javax.imageio.IIOImage
 import javax.imageio.ImageIO
+import javax.imageio.ImageWriteParam
 
 object FileUtil {
 
@@ -34,10 +37,58 @@ object FileUtil {
 
     fun getColorBit(color: Int, bitLength: Int): String {
         val result = Integer.toBinaryString(color)
-        val lastIndex = result.length
-        val startIndex = lastIndex - bitLength
-        return result.substring(startIndex, lastIndex)
+        val lastIndex = result.length - 1
+        val startIndex = lastIndex - (bitLength - 1)
+        return result.substring(startIndex..lastIndex)
     }
 
-    const val MAX_RGB_VALUE = 255
+    //todo: resize image so stego is always smaller than original
+    fun resizeImage(file: MultipartFile, compressToWidth: Int, compressToHeight: Int): BufferedImage {
+        val image = openImage(file)
+        Log.d("Image Compression Start", image.width.toString())
+        var compressed = resizeImage(image)
+//        while((compressed.width > compressToWidth)||compressed.height > compressToHeight){
+//            compressed = compressImage(compressed)
+//        }
+        Log.d("Image Compression Start", compressed.width.toString())
+        return compressed
+    }
+
+    private fun resizeImage(image: BufferedImage): BufferedImage {
+        val compressedFile = File("compressedImage.png")
+        val fos = FileOutputStream(compressedFile)
+
+        //image writers
+        val imageWriters = ImageIO.getImageWritersByFormatName("png")
+        if (!imageWriters.hasNext())
+            throw IllegalStateException("Writers Not Found!!")
+        val writer = imageWriters.next()
+        val imageOutputStream = ImageIO.createImageOutputStream(fos)
+        writer.output = imageOutputStream
+
+        //set compress metrics
+        val imageParam = writer.defaultWriteParam
+        imageParam.compressionMode = ImageWriteParam.MODE_EXPLICIT
+        imageParam.compressionQuality = 0.9f
+
+        writer.write(null, IIOImage(image, null, null), imageParam)
+        fos.close()
+        imageOutputStream.close()
+        writer.dispose()
+        return ImageIO.read(compressedFile)
+    }
+
+    fun readColorValue(color: Int): Int {
+        val colorBits = Integer.toBinaryString(color).padStart(8, '0')
+        val stegColor = colorBits.substring(4..7).padEnd(8, '0')
+        return Integer.parseInt(stegColor, 2)
+    }
+
+    fun mixColorBits(firstColorByte: Int, secondColorValue: Int): Int {
+        //take the first 4 bits of two values and mix then into 1 byte
+        val firstBitString = Integer.toBinaryString(firstColorByte).padStart(8, '0')
+        val secondBitString = Integer.toBinaryString(secondColorValue).padStart(8, '0')
+        val mixedBitString = firstBitString.substring(0..3) + secondBitString.substring(0..3)
+        return Integer.parseInt(mixedBitString, 2)
+    }
 }

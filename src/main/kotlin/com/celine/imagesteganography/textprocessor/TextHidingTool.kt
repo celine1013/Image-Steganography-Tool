@@ -14,12 +14,9 @@ import javax.imageio.ImageIO
 @Service
 class TextHidingTool {
 
-    @Value("\${com.celine.imagesteganography.src}")
-    lateinit var srcPath: String
-
-    fun hideMessageInImage(msg: String): ByteArrayOutputStream{
+    fun hideMessageInImage(msg: String, coverFile: MultipartFile): ByteArrayOutputStream{
         val fileBos = ByteArrayOutputStream()
-        val coverImage = FileUtil.openImage(srcPath, "batman2.jpg") //todo: allow user to pick image from a range
+        val coverImage = FileUtil.openImage(coverFile)
         val encodedData = FileUtil.toBinary("$DATA_FLAG{$msg}")
         insertData(coverImage, encodedData)
         ImageIO.write(coverImage, "png", fileBos)//has to be a png to prevent auto-file-compression
@@ -58,7 +55,6 @@ class TextHidingTool {
     }
 
     fun extractMessageFromImage(file: MultipartFile):String{
-        //todo:solve image compression problem
         val image = FileUtil.openImage(file)
 
         val sb = StringBuilder()
@@ -90,6 +86,5 @@ class TextHidingTool {
 
     companion object{
         const val DATA_FLAG = "ZZEN9203"
-        const val SEPERATOR = '-'
     }
 }

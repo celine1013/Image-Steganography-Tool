@@ -37,4 +37,16 @@ class FileUtilTest {
         result = FileUtil.getColorBit(254, 3)
         assertEquals("110", result)
     }
+
+    @Test
+    fun testMixColorBits(){
+        var result = FileUtil.mixColorBits(240, 240)
+        assertEquals(255, result)
+    }
+
+    @Test
+    fun testReadColorValue(){
+        val result = FileUtil.readColorValue(15)
+        assertEquals(240, result)
+    }
 }
