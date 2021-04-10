@@ -14,6 +14,11 @@ There are a lot of research papers about this. And I even found an online tool w
 1. **[COMPLETED] ** 1-2 page infographic explaining what it is, how it works, and where it’s used. - [Image Steganography.pdf](https://github.com/celine1013/Image-Steganography-Tool/files/6176624/Image.Steganography.pdf)
 
 2. A message processor program which provides below functionality:
-  - The user can provide a text or image to the processor, and they will get another image which has the message/image hidden in it.
-  - The user can provide an image with hidden message to the processor, and they will get the original message extracted. (The range of the supplied images will be limited)
+  - **[COMPLETED] ** The user can provide a text or image to the processor, and they will get another image which has the message/image hidden in it.
+  - **[COMPLETED] ** The user can provide an image with hidden message to the processor, and they will get the original message extracted. (The range of the supplied images will be limited)
   - (Optional) Message in other format such as audio is also supported
+
+# Additional Attachment
+POSTMAN EXAMPLE REQUEST: 
+[ImageSteganography.postman_collection.zip](https://github.com/celine1013/Image-Steganography-Tool/files/6289659/ImageSteganography.postman_collection.zip)
+
