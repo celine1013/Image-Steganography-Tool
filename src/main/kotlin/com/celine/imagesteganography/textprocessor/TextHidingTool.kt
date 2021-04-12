@@ -71,7 +71,7 @@ class TextHidingTool {
         }
         val rawMessage = result.toString()
         val flagRegex = "$DATA_FLAG\\{[\\w|\\s]+}".toRegex()
-        val extractedMessage = flagRegex.find(rawMessage)?.value?:"No hidden message found"
+        val extractedMessage = (flagRegex.find(rawMessage)?.value?:"No hidden message found").removePrefix("$DATA_FLAG{").removeSuffix("}")
         Log.d("Message", extractedMessage)
         return extractedMessage
     }
